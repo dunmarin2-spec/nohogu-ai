@@ -3,39 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>호구 탈출 AI - 100% 실전판</title>
+    <title>호구 탈출 AI - 최종 완성본</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-5 flex flex-col items-center font-sans text-gray-800">
+<body class="bg-gray-100 p-5 flex flex-col items-center font-sans">
 
     <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-6 mt-10 border-t-8 border-red-600">
-        <h1 class="text-3xl font-bold text-center mb-2 italic text-red-600">🛡️ 호구 탈출 AI</h1>
-        <p class="text-center text-gray-500 mb-6 text-sm">"상사의 무리한 요구, 이제 AI가 받아쳐 드립니다."</p>
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">🛡️ 호구 탈출 AI</h1>
+        <p class="text-center text-gray-500 mb-6 text-sm italic">"부장님, 죄송하지만 그건 제 알바가 아닙니다."</p>
 
-        <label class="block font-bold mb-2">상사의 카톡/멘트 입력:</label>
-        <textarea id="bossMessage" rows="4" class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-red-500 mb-4 outline-none" placeholder="예: 오늘 저녁에 삼겹살 번개 어때?"></textarea>
+        <label class="block text-gray-700 font-bold mb-2">상사의 빡치는 멘트 입력:</label>
+        <textarea id="bossMessage" rows="4" class="w-full border rounded-lg p-3 text-gray-700 focus:ring-2 focus:ring-red-500 mb-4" placeholder="예: 오늘 저녁에 삼겹살 번개 어때?"></textarea>
 
-        <button onclick="askGemini()" id="btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-4 rounded-lg shadow-md transition duration-200 text-lg">
-            방어 멘트 생성하기 (Gemini)
+        <button onclick="askGemini()" id="btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-4 rounded-lg shadow-md transition duration-200">
+            실시간 방어 멘트 생성 (Gemini)
         </button>
 
         <div id="loading" class="mt-6 text-center hidden">
             <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-600"></div>
-            <p class="text-gray-500 mt-2 font-bold">제미나이가 팩트 폭격 준비 중... 🥊</p>
+            <p class="text-gray-500 mt-2">제미나이가 반격 준비 중... 🥊</p>
         </div>
 
         <div id="resultArea" class="mt-8 hidden">
-            <h2 class="text-lg font-bold mb-4 flex items-center">
-                <span class="mr-2 text-xl">💡</span> AI의 사이다 답변 카드
+            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                <span class="mr-2">💡</span> AI 추천 반격 카드
             </h2>
-            <div id="replyBox" class="space-y-4 text-sm">
-                </div>
+            <div id="replyBox" class="space-y-4"></div>
         </div>
     </div>
 
     <script>
-        // 형님의 소중한 API 키 (정확히 확인 완료)
-        const API_KEY = "AIzaSyDkzuhZQRaZtAVD99hgmalcgfFiAZLAKpU";
+        // 🚨 형님! 여기서 새로 발급받은 '새 프로젝트 열쇠'를 따옴표 안에 넣으세요!
+        const API_KEY = "AIzaSyBNKJKju7y8RfnYynkyh4dbuZ_pD-sXvN8"; 
 
         async function askGemini() {
             const msg = document.getElementById('bossMessage').value;
@@ -44,19 +43,17 @@
             const resultArea = document.getElementById('resultArea');
             const replyBox = document.getElementById('replyBox');
 
-            if (!msg) return alert("부장님의 헛소리를 먼저 적어주십쇼!");
+            if (!msg) return alert("부장님의 멘트를 먼저 입력해 주세요!");
 
             btn.disabled = true;
-            btn.innerText = "처리 중...";
             loading.classList.remove('hidden');
             resultArea.classList.add('hidden');
 
-            // 2026년 기준 가장 안정적인 프롬프트 세팅
-            const prompt = `너는 대한민국 최고의 직장인 처세술 전문가야. 상사의 무리한 요구나 질문에 대해 [유머형], [철벽 방어형], [은은한 광기형] 3가지 답변을 만들어줘. 말투는 극도로 정중한 '비즈니스 톤'이어야 하지만 내용은 확실하게 거절하거나 방어해야 해. 상사의 말: "${msg}"`;
+            const prompt = `너는 대한민국 최고의 직장인 처세술 전문가야. 상사의 무리한 요구에 대해 [유머형], [철벽 방어형], [은은한 광기형] 3가지 답변을 정중한 비즈니스 톤으로 만들어줘. 상사의 말: "${msg}"`;
 
             try {
-                // 🚨 수정 포인트: v1 정식 주소와 gemini-1.5-flash 모델 사용
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+                // 주소와 모델명을 가장 표준적인 조합(v1beta + gemini-1.5-flash)으로 고정했습니다.
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -70,25 +67,19 @@
                     throw new Error(data.error.message);
                 }
 
-                if (!data.candidates || data.candidates.length === 0) {
-                    throw new Error("AI가 답변을 생성하지 못했습니다.");
-                }
-
                 const resultText = data.candidates[0].content.parts[0].text;
 
-                // 결과 가공 (줄바꿈 처리)
-                replyBox.innerHTML = resultText.split('\n').filter(l => l.trim() !== "").map(l => 
-                    `<div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm leading-relaxed">${l}</div>`
+                replyBox.innerHTML = resultText.split('\n').filter(line => line.trim() !== "").map(line => 
+                    `<div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-gray-700 shadow-sm leading-relaxed">${line}</div>`
                 ).join('');
 
                 resultArea.classList.remove('hidden');
             } catch (error) {
                 console.error(error);
-                alert("🚨 에러 발생: " + error.message + "\n\n형님, 이번에도 안 되면 제가 직접 고치러 가겠습니다!");
+                alert("🚨 에러: " + error.message + "\n\n형님, 새 프로젝트에서 만든 키가 맞는지 꼭 확인해 보십쇼!");
             } finally {
                 loading.classList.add('hidden');
                 btn.disabled = false;
-                btn.innerText = "방어 멘트 생성하기 (Gemini)";
             }
         }
     </script>
