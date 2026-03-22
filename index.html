@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>호구 탈출 AI - 직장인 방어 멘트 생성기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-5 flex flex-col items-center font-sans">
+
+    <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-6 mt-10">
+        <h1 class="text-2xl font-bold text-center text-red-600 mb-2">🛡️ 호구 탈출 AI</h1>
+        <p class="text-center text-gray-500 mb-6 text-sm">부장님의 개소리, 이제 AI가 우아하게 반격해 드립니다.</p>
+
+        <label class="block text-gray-700 font-bold mb-2">상사의 빡치는 멘트 입력:</label>
+        <textarea id="bossMessage" rows="4" class="w-full border rounded-lg p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 mb-4" placeholder="예: 오늘 저녁에 삼겹살 번개 어때?"></textarea>
+
+        <button onclick="generateReply()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+            방어 멘트 생성하기 (AI)
+        </button>
+
+        <p id="loading" class="text-center text-gray-500 mt-4 hidden">AI 판사가 짱구를 굴리는 중입니다... ⏳</p>
+
+        <div id="resultArea" class="mt-6 hidden">
+            <h2 class="text-lg font-bold text-gray-800 mb-2">💡 추천 방어 멘트</h2>
+            <div class="bg-gray-50 p-4 rounded-lg border text-sm text-gray-700">
+                <p><strong>[센스/유머형]</strong><br><span id="reply1"></span></p>
+                <hr class="my-3">
+                <p><strong>[철벽 방어형]</strong><br><span id="reply2"></span></p>
+                <hr class="my-3">
+                <p><strong>[은은한 광기형]</strong><br><span id="reply3"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateReply() {
+            const message = document.getElementById('bossMessage').value;
+            if(!message) {
+                alert("상사의 카톡 내용을 먼저 입력하십쇼!");
+                return;
+            }
+
+            // 로딩 화면 켜기
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('resultArea').classList.add('hidden');
+
+            /* * 형님, 나중에 여기에 OpenAI API 연결 코드가 들어갑니다!
+             * 지금은 테스트용으로 가짜 결과를 3초 뒤에 띄워줍니다. 
+             */
+            setTimeout(() => {
+                document.getElementById('reply1').innerText = "부장님! 제가 오늘 지갑을 두고 와서요. 혹시 부장님이 쏘시는 거면 영혼 팔고 가겠습니다! ^^";
+                document.getElementById('reply2').innerText = "아이고 챙겨주셔서 감사합니다! 근데 오늘 오래전부터 예약해 둔 진료가 있어서요 ㅠㅠ";
+                document.getElementById('reply3').innerText = "아, 저는 주말에 조용히 명상하면서 다음 주 업무 계획 세우는 게 짜릿하더라고요 하하!";
+
+                // 로딩 끄고 결과 보여주기
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('resultArea').classList.remove('hidden');
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
